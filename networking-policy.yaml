@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1 
+kind: NetworkPolicy
+metadata: 
+ name: np01
+spec: 
+ podSelector: 
+  matchLabels: 
+   name: pod-on-which-it-apply
+ policyTypes: 
+  - Egress
+  -  Ingress
+ ingress: 
+  - from: 
+     - podSelector:
+        matchLabels: 
+         name: pod1-from-which-incoming-rule-is-applied
+    ports:
+     - port: 8080
+       protocol: TCP
+  - from: 
+     - podSelector: 
+        matchLabels: 
+         name: pod2-from-which-incoming-rule-is-applied
+    ports:
+     - port: 8082
+       protocol: TCP 
+ egress: 
+  - to:  
+     - podSelector: 
+        matchLabels: 
+          name: pod1-to-which-rule-is-applied    
+    ports: 
+     - port: 9090
+       protocol: TCP
+  - to: 
+     - podSelector: 
+        matchLabels: 
+         name: pod2-to-which-rule-is-applied
+    ports: 
+     - port: 9091
+       protocol: TCP    

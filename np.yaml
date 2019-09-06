@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: 
+ name: np01
+spec: 
+ podSelector: 
+  matchLabels:
+   name: pods-on-which-policy-apply
+ policyTypes: 
+  - Ingress
+  - Egress
+ ingress:
+  - from: 
+     podSelector: 
+      matchLabels:
+       name: pod1-to-which-policy-apply
+     ports: 
+      - port: 8080
+        protocol: TCP
+  - from
+      podSelector:
+       matchLabels: 
+        name: pod2-to-which-policy-apply
+      ports: 
+       - port: 8081
+         protocol: TCP
+ egress:
+  - to: 
+     podSelector: 
+      matchLabels: 
+       name: pod1-from-which-policy-apply
+     ports: 
+      - port: 8082 
+        protocol: TCP
+  - to: 
+     podSelector: 
+      matchLabels: 
+       name: pod2-from-which-policy-apply
+     ports: 
+      - port: 8083
+        protocol: TCP
+   
